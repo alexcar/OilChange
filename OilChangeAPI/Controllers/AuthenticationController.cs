@@ -8,6 +8,7 @@ namespace TrocaoOleoAPI.Controllers
 {
     [Route("api/Authentication")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IServiceManager _service;
@@ -18,7 +19,6 @@ namespace TrocaoOleoAPI.Controllers
         }
 
         [HttpPost]
-        // [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
             var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
@@ -36,7 +36,7 @@ namespace TrocaoOleoAPI.Controllers
             return StatusCode(201);
         }
 
-        [HttpPost("login")]
+        [HttpPost("login")]        
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
             if (!await _service.AuthenticationService.ValidateUser(user))
@@ -46,13 +46,6 @@ namespace TrocaoOleoAPI.Controllers
 
             var tokenDto = await _service.AuthenticationService.CreateToken(populateExp: true);
             return Ok(tokenDto);
-        }
-
-        [HttpGet("GetTestToken")]
-        [Authorize(Roles = "Administrator")]
-        public IActionResult GetTestToken()
-        {
-            return Ok("Acesso realizado com sucesso");
         }
     }
 }

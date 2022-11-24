@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -7,6 +7,7 @@ namespace TrocaoOleoAPI.Controllers
 {
     [Route("api/vehicles")]
     [ApiController]
+    [Authorize(Roles = "Administrator, Customer")]
     public class VehiclesController : ControllerBase
     {
         private readonly IServiceManager _service;

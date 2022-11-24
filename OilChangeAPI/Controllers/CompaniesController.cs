@@ -7,6 +7,7 @@ namespace TrocaoOleoAPI.Controllers
 {
     [Route("api/companies")]    
     [ApiController]
+    [Authorize(Roles = "Administrator")]
     public class CompaniesController : ControllerBase
     {
         private readonly IServiceManager _service;

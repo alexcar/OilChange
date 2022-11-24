@@ -1,14 +1,17 @@
 ﻿using EmailService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using System.Data;
 using System.Xml.Linq;
 
 namespace TrocaoOleoAPI.Controllers
 {
     [Route("api/customers")]
     [ApiController]
+    [Authorize(Roles = "Administrator, Customer")]
     public class CustomersController : ControllerBase
     {
         private readonly IServiceManager _service;
@@ -45,6 +48,7 @@ namespace TrocaoOleoAPI.Controllers
         }
 
         [HttpPost("registration")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateRegistration([FromBody] CustomerRegistrationForCreationDto customerRegistration)
         {
             await _service.CustomerService.CreateRegistrationAsync(customerRegistration);            
