@@ -27,7 +27,7 @@ namespace EmailService
             };
 
             messageToSend.Body = new TextPart(
-                MimeKit.Text.TextFormat.Plain)
+                MimeKit.Text.TextFormat.Html)
             { Text = body };
 
             messageToSend.To.Add(new MailboxAddress(toName, toAddress));

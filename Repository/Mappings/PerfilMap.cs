@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Mappings
 {
-    public class ProductManufacturerMap : IEntityTypeConfiguration<ProductManufacturer>
+    public class PerfilMap : IEntityTypeConfiguration<Perfil>
     {
-        public void Configure(EntityTypeBuilder<ProductManufacturer> builder)
+        public void Configure(EntityTypeBuilder<Perfil> builder)
         {
-            builder.ToTable("ProductManufacturer");
+            builder.ToTable("Perfil");
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(30);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(60);
             builder.Property(x => x.Active).IsRequired().HasDefaultValueSql("1");
             builder.Property(x => x.CreationDate).IsRequired().HasDefaultValueSql("getdate()");
         }

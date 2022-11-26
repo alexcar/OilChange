@@ -6,6 +6,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using System.Text;
 
 namespace Service
 {
@@ -84,7 +85,14 @@ namespace Service
             } else
             {
                 // TODO: Gravar log dos possíveis erros ao incluir/alterar/excluir nas tabelas customer, vehicle, user e roles.
-                throw new Exception("Não foi possível registrar o cliente. Favor tente novamente");
+                var errors = new StringBuilder();
+
+                foreach (var error in result.Errors)
+                {
+                    errors.Append(error.Description);
+                }
+                
+                throw new Exception($"Não foi possível registrar o cliente devido ao(s) seguinte(s) erro(s): {errors.ToString()} ");
             }            
         }
 
@@ -160,8 +168,7 @@ namespace Service
                 ZipCode = customerRegistration.Zipcode,
                 Country = customerRegistration.Country,
                 Active = customerRegistration.Active,
-                CreationDate = DateTime.Now,
-                UserUpdate = customerRegistration.UserUpdate,
+                CreationDate = DateTime.Now
             };
 
             _repository.Customer.CreateCustomer(customer);

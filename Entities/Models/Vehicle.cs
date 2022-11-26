@@ -13,5 +13,6 @@
         public VehicleFuel? Fuel { get; set; }
         public Guid YearId { get; set; }
         public VehicleYear? Year { get; set; }
+        public ICollection<PriceQuote>? PriceQuotes { get; set; } = new List<PriceQuote>();
     }
 }

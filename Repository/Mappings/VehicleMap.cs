@@ -12,9 +12,8 @@ namespace Repository.Mappings
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.LicencePlate).IsRequired().HasMaxLength(15);
-            builder.Property(x => x.Active).IsRequired();
-            builder.Property(x => x.UserUpdate).IsRequired();
-            builder.Property(x => x.CreationDate).IsRequired();
+            builder.Property(x => x.Active).IsRequired().HasDefaultValueSql("1");
+            builder.Property(x => x.CreationDate).IsRequired().HasDefaultValueSql("getdate()");
         }
     }
 }

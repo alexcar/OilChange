@@ -14,6 +14,8 @@ namespace Repository.Mappings
             builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Description).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Price).HasPrecision(5, 2).IsRequired();
+            builder.Property(x => x.Active).IsRequired().HasDefaultValueSql("1");
+            builder.Property(x => x.CreationDate).IsRequired().HasDefaultValueSql("getdate()");
 
             builder.HasOne(p => p.ProductManufacturer)
                 .WithMany(pm => pm.Products)

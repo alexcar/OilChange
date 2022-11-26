@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class DatabaseCreation : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,73 +55,17 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Company",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    CommercialName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    Cnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contact = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Ddd = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
-                    WebSite = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Neighborhood = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    County = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    UF = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Company", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CreditCardBrand",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CreditCardBrand", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Cpf = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
-                    Login = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Complement = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Neighborhood = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    County = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Uf = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
-                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,13 +74,70 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Infrastructure", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentMethod",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    ValueDiscount = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
+                    PercentageDiscount = table.Column<int>(type: "int", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentMethod", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Perfil",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Perfil", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceQuoteAction",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceQuoteAction", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceQuoteStatus",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceQuoteStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -145,9 +146,8 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -155,14 +155,27 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReasonCancellationPriceQuote",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReasonCancellationPriceQuote", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -175,9 +188,8 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -190,9 +202,8 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -205,9 +216,8 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -220,9 +230,8 @@ namespace Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -330,24 +339,93 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InfrastructureCompany",
+                name: "Company",
                 columns: table => new
                 {
-                    CompaniesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InfrastructuresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    CommercialName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Cnpj = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    Contact = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Ddd = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    WebSite = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Complement = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Neighborhood = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    County = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    UF = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InfrastructureCompany", x => new { x.CompaniesId, x.InfrastructuresId });
+                    table.PrimaryKey("PK_Company", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InfrastructureCompany_Company_CompaniesId",
-                        column: x => x.CompaniesId,
-                        principalTable: "Company",
+                        name: "FK_Company_Perfil_PerfilId",
+                        column: x => x.PerfilId,
+                        principalTable: "Perfil",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    Login = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyUser", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InfrastructureCompany_Infrastructure_InfrastructuresId",
-                        column: x => x.InfrastructuresId,
-                        principalTable: "Infrastructure",
+                        name: "FK_CompanyUser_Perfil_PerfilId",
+                        column: x => x.PerfilId,
+                        principalTable: "Perfil",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customer",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Cpf = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(90)", maxLength: 90, nullable: false),
+                    Login = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Complement = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Neighborhood = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    County = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Uf = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PerfilId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customer_Perfil_PerfilId",
+                        column: x => x.PerfilId,
+                        principalTable: "Perfil",
                         principalColumn: "Id");
                 });
 
@@ -360,9 +438,8 @@ namespace Repository.Migrations
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     ProductManufacturerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -397,6 +474,28 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InfrastructureCompany",
+                columns: table => new
+                {
+                    CompaniesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InfrastructuresId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InfrastructureCompany", x => new { x.CompaniesId, x.InfrastructuresId });
+                    table.ForeignKey(
+                        name: "FK_InfrastructureCompany_Company_CompaniesId",
+                        column: x => x.CompaniesId,
+                        principalTable: "Company",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_InfrastructureCompany_Infrastructure_InfrastructuresId",
+                        column: x => x.InfrastructuresId,
+                        principalTable: "Infrastructure",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vehicle",
                 columns: table => new
                 {
@@ -407,9 +506,8 @@ namespace Repository.Migrations
                     BrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FuelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     YearId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    UserUpdate = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -463,6 +561,118 @@ namespace Repository.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PriceQuote",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PriceQuoteNumber = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comments = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ExecutionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CheckinDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CheckoutDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentMethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PriceQuoteStatusId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PriceQuoteActionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReasonCancellationPriceQuoteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceQuote", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_CompanyUser_CompanyUserId",
+                        column: x => x.CompanyUserId,
+                        principalTable: "CompanyUser",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_Company_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Company",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_PaymentMethod_PaymentMethodId",
+                        column: x => x.PaymentMethodId,
+                        principalTable: "PaymentMethod",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_PriceQuoteAction_PriceQuoteActionId",
+                        column: x => x.PriceQuoteActionId,
+                        principalTable: "PriceQuoteAction",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_PriceQuoteStatus_PriceQuoteStatusId",
+                        column: x => x.PriceQuoteStatusId,
+                        principalTable: "PriceQuoteStatus",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_ReasonCancellationPriceQuote_ReasonCancellationPriceQuoteId",
+                        column: x => x.ReasonCancellationPriceQuoteId,
+                        principalTable: "ReasonCancellationPriceQuote",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuote_Vehicle_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicle",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceQuoteProduct",
+                columns: table => new
+                {
+                    PriceQuotesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceQuoteProduct", x => new { x.PriceQuotesId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_PriceQuoteProduct_PriceQuote_PriceQuotesId",
+                        column: x => x.PriceQuotesId,
+                        principalTable: "PriceQuote",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuoteProduct_Product_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceQuoteService",
+                columns: table => new
+                {
+                    PriceQuotesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ServicesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceQuoteService", x => new { x.PriceQuotesId, x.ServicesId });
+                    table.ForeignKey(
+                        name: "FK_PriceQuoteService_PriceQuote_PriceQuotesId",
+                        column: x => x.PriceQuotesId,
+                        principalTable: "PriceQuote",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceQuoteService_Service_ServicesId",
+                        column: x => x.ServicesId,
+                        principalTable: "Service",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -503,14 +713,79 @@ namespace Repository.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Company_PerfilId",
+                table: "Company",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CompanyService_ServicesId",
                 table: "CompanyService",
                 column: "ServicesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompanyUser_PerfilId",
+                table: "CompanyUser",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customer_PerfilId",
+                table: "Customer",
+                column: "PerfilId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InfrastructureCompany_InfrastructuresId",
                 table: "InfrastructureCompany",
                 column: "InfrastructuresId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_CompanyId",
+                table: "PriceQuote",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_CompanyUserId",
+                table: "PriceQuote",
+                column: "CompanyUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_CustomerId",
+                table: "PriceQuote",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_PaymentMethodId",
+                table: "PriceQuote",
+                column: "PaymentMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_PriceQuoteActionId",
+                table: "PriceQuote",
+                column: "PriceQuoteActionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_PriceQuoteStatusId",
+                table: "PriceQuote",
+                column: "PriceQuoteStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_ReasonCancellationPriceQuoteId",
+                table: "PriceQuote",
+                column: "ReasonCancellationPriceQuoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuote_VehicleId",
+                table: "PriceQuote",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuoteProduct_ProductsId",
+                table: "PriceQuoteProduct",
+                column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceQuoteService_ServicesId",
+                table: "PriceQuoteService",
+                column: "ServicesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_ProductManufacturerId",
@@ -576,10 +851,13 @@ namespace Repository.Migrations
                 name: "InfrastructureCompany");
 
             migrationBuilder.DropTable(
-                name: "ProductService");
+                name: "PriceQuoteProduct");
 
             migrationBuilder.DropTable(
-                name: "Vehicle");
+                name: "PriceQuoteService");
+
+            migrationBuilder.DropTable(
+                name: "ProductService");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -588,16 +866,40 @@ namespace Repository.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Company");
+                name: "Infrastructure");
 
             migrationBuilder.DropTable(
-                name: "Infrastructure");
+                name: "PriceQuote");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Service");
+
+            migrationBuilder.DropTable(
+                name: "CompanyUser");
+
+            migrationBuilder.DropTable(
+                name: "Company");
+
+            migrationBuilder.DropTable(
+                name: "PaymentMethod");
+
+            migrationBuilder.DropTable(
+                name: "PriceQuoteAction");
+
+            migrationBuilder.DropTable(
+                name: "PriceQuoteStatus");
+
+            migrationBuilder.DropTable(
+                name: "ReasonCancellationPriceQuote");
+
+            migrationBuilder.DropTable(
+                name: "Vehicle");
+
+            migrationBuilder.DropTable(
+                name: "ProductManufacturer");
 
             migrationBuilder.DropTable(
                 name: "Customer");
@@ -615,7 +917,7 @@ namespace Repository.Migrations
                 name: "VehicleYear");
 
             migrationBuilder.DropTable(
-                name: "ProductManufacturer");
+                name: "Perfil");
         }
     }
 }
