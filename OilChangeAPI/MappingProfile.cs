@@ -30,6 +30,9 @@ namespace TrocaoOleoAPI
             CreateMap<Vehicle, VehicleDto>();
             CreateMap<VehicleForCreationDto, Vehicle>();
             CreateMap<VehicleForUpdateDto, Vehicle>();
+
+            CreateMap<CompanyUser, CompanyUserDto>();
+            CreateMap<CompanyUserForCreationDto, CompanyUser>();
         }
     }
 }

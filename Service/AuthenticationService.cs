@@ -78,16 +78,29 @@ namespace Service
                 }
             }
 
-            // recupera id do customer
-            var customer = _repository.Customer.GetByLoginAsync(_user.UserName);
+            if (isAdmin)
+            {
+                var companyUser = _repository.CompanyUser.GetByLoginAsync(_user.UserName);
 
-            if (customer.Result is null)
-                throw new Exception($"Nenhum cliente encontrado com o login: {_user.UserName}");
+                if (companyUser.Result is null)
+                    throw new Exception($"Nenhum usuário encontrado com o login: {_user.UserName}");
 
-            // var customerDto = _mapper.Map<CustomerDto>(customer);
+                return new AuthenticatedUserDto(
+                    companyUser.Result.Id, _user.FirstName, _user.LastName, _user.Email, accessToken, refresToken, isAdmin);
+            }
+            else
+            {
+                // recupera id do customer
+                var customer = _repository.Customer.GetByLoginAsync(_user.UserName);
 
-            return new AuthenticatedUserDto(
-                customer.Result.Id, _user.FirstName, _user.LastName, _user.Email, accessToken, refresToken, isAdmin);
+                if (customer.Result is null)
+                    throw new Exception($"Nenhum cliente encontrado com o login: {_user.UserName}");
+
+                // var customerDto = _mapper.Map<CustomerDto>(customer);
+
+                return new AuthenticatedUserDto(
+                    customer.Result.Id, _user.FirstName, _user.LastName, _user.Email, accessToken, refresToken, isAdmin);
+            }            
         }
 
         public async Task<AuthenticatedUserDto> RefreshToken(TokenDto tokenDto)

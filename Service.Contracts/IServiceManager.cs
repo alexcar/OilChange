@@ -10,5 +10,6 @@
         IAuthenticationService AuthenticationService { get; }
         ICustomerService CustomerService { get; }
         IVehicleService VehicleService { get; }
+        ICompanyUserService CompanyUserService { get; }
     }
 }

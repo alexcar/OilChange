@@ -4,6 +4,8 @@ namespace Shared.DataTransferObjects
 {
     public record CustomerForCreationDto()
     {
+        // HOTO: Incluir o campo password
+        
         [Required(ErrorMessage = "O campo Nome do cliente é obrigatório.")]
         [MaxLength(30, ErrorMessage = "O tamanho máximo para o nome do cliente é de 100 caracteres.")]
         public string? Name { get; set; }

@@ -134,11 +134,13 @@ namespace Service
         
         private async Task ValidateFields(CustomerRegistrationForCreationDto customerRegistration)
         {
-            var cpf = customerRegistration.Cpf!.Replace(".", "").Replace("-", "");
+            // var cpf = customerRegistration.Cpf!.Replace(".", "").Replace("-", "");
+            // TODO: Gravar no banco com o formato 999.999.999-99
+            // Se o usuário informar sem ponto e hífen, incluir antes de gravar no banco
 
-            if (await CpfAlreadyRegistered(cpf))
+            if (await CpfAlreadyRegistered(customerRegistration.Cpf))
             {
-                throw new CpfAlreadyRegisteredException(cpf);
+                throw new CpfAlreadyRegisteredException(customerRegistration.Cpf);
             }
 
             if (await EmailAlreadyRegistered(customerRegistration.Email.Trim()))
@@ -155,7 +157,7 @@ namespace Service
             var customer = new Customer()
             {
                 Name = customerRegistration.Name,
-                Cpf = customerRegistration.Cpf!.Replace(".", "").Replace("-", ""),
+                Cpf = customerRegistration.Cpf,
                 Gender = customerRegistration.Gender,
                 Phone = $"{customerRegistration.Ddd} {customerRegistration.Phone}",
                 Email = customerRegistration.Email,

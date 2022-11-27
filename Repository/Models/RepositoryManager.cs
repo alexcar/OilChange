@@ -12,6 +12,7 @@ namespace Repository.Models
         private readonly Lazy<IProductRepository> _productRepository;
         private readonly Lazy<ICustomerRepository> _customerRepository;
         private readonly Lazy<IVehicleRepository> _vehicleRepository;
+        private readonly Lazy<ICompanyUserRepository> _companyUserRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -37,6 +38,9 @@ namespace Repository.Models
 
             _vehicleRepository = new Lazy<IVehicleRepository>(
                 () => new VehicleRepository(repositoryContext));
+            
+            _companyUserRepository = new Lazy<ICompanyUserRepository>(
+                () => new CompanyUserRepository(repositoryContext));
         }
 
         public ICompanyRepository Company => _companyRepository.Value;
@@ -45,9 +49,8 @@ namespace Repository.Models
         public IProductManufacturerRepository ProductManufacturer => _productManufacturerRepository.Value;
         public IProductRepository Product => _productRepository.Value;
         public ICustomerRepository Customer => _customerRepository.Value;
-
         public IVehicleRepository Vehicle => _vehicleRepository.Value;
-
-        public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
+        public ICompanyUserRepository CompanyUser => _companyUserRepository.Value;
+        public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();        
     }
 }

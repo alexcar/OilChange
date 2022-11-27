@@ -17,7 +17,8 @@ namespace Service
         private readonly Lazy<IProductService> _productService;
         private readonly Lazy<IAuthenticationService> _authenticationService;
         private readonly Lazy<ICustomerService> _customerService;
-        private readonly Lazy<IVehicleService> _vehicleService;        
+        private readonly Lazy<IVehicleService> _vehicleService;
+        private readonly Lazy<ICompanyUserService> _companyUserService;
 
         public ServiceManager(
             IRepositoryManager repositoryManager,            
@@ -49,7 +50,10 @@ namespace Service
                 new CustomerService(repositoryManager, mapper, emailSender, logger, userManager));
 
             _vehicleService = new Lazy<IVehicleService>(() => 
-            new VehicleService(repositoryManager, mapper));
+                new VehicleService(repositoryManager, mapper));
+
+            _companyUserService = new Lazy<ICompanyUserService>(() =>
+                new CompanyUserService(repositoryManager, mapper, logger, userManager));
         }
 
         public ICompanyService CompanyService => _companyService.Value;
@@ -59,6 +63,7 @@ namespace Service
         public IProductService ProductService => _productService.Value;
         public IAuthenticationService AuthenticationService => _authenticationService.Value;
         public ICustomerService CustomerService => _customerService.Value;
-        public IVehicleService VehicleService => _vehicleService.Value;        
+        public IVehicleService VehicleService => _vehicleService.Value;
+        public ICompanyUserService CompanyUserService => _companyUserService.Value;
     }
 }
